@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { BookOpen, Users, Award, BarChart3, User, Menu, X, Settings } from 'lucide-react';
+import { 
+  BookOpen, 
+  Users, 
+  Award, 
+  BarChart3, 
+  User, 
+  Menu, 
+  X, 
+  Settings,
+  LucideIcon 
+} from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import Courses from './components/Courses';
 import Employees from './components/Employees';
@@ -8,12 +18,20 @@ import Analytics from './components/Analytics';
 import Profile from './components/Profile';
 import AdminPanel from './components/AdminPanel';
 
-function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isAdmin] = useState(true); // В реальном приложении это будет из контекста пользователя
+// Типы для меню
+interface MenuItem {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  adminOnly?: boolean;
+}
 
-  const menuItems = [
+function App() {
+  const [activeTab, setActiveTab] = useState<string>('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [isAdmin] = useState<boolean>(true); // В реальном приложении это будет из контекста пользователя
+
+  const menuItems: MenuItem[] = [
     { id: 'dashboard', label: 'Панель управления', icon: BarChart3 },
     { id: 'courses', label: 'Курсы', icon: BookOpen },
     { id: 'employees', label: 'Сотрудники', icon: Users },
@@ -23,7 +41,7 @@ function App() {
     { id: 'profile', label: 'Профиль', icon: User },
   ];
 
-  const renderContent = () => {
+  const renderContent = (): JSX.Element => {
     switch (activeTab) {
       case 'dashboard': return <Dashboard />;
       case 'courses': return <Courses />;
@@ -51,6 +69,7 @@ function App() {
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-3 rounded-xl bg-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+        aria-label="Toggle menu"
       >
         {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
@@ -72,6 +91,7 @@ function App() {
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors duration-300"
+            aria-label="Close menu"
           >
             <X className="w-5 h-5" />
           </button>
@@ -108,7 +128,7 @@ function App() {
             <div className="flex items-center space-x-3">
               <img
                 src="https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop"
-                alt="User"
+                alt="User avatar"
                 className="w-10 h-10 rounded-full object-cover ring-2 ring-blue-200"
               />
               <div>
